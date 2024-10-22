@@ -22,20 +22,58 @@ const filename = args[1];
 const fileContent = fs.readFileSync(filename, "utf8");
 
 const Parenthesis = (fileContent) =>{
-  let lines = fileContent.split('\n');
-  for(let i = 0; i < lines.length; i++) {
-    for(let j = 0; j < lines[i].length; j++) {
-      switch (lines[i][j]) {
-        case '(':
-          console.log("LEFT_PAREN ( null");
-          break;
-        case ')':
-          console.log("RIGHT_PAREN ) null");
-          break;
+  let token = '';
+  let isError = false;
+  
+    let lines = fileContent.split("\n");
+  for (const line of lines) {
+    for (const [index, line] of lines.entries()) {
+      for (const ch of line) {
+        if (ch == '(') {
+          token += 'LEFT_PAREN ( null\n';
+        }
+        else if (ch == ')') {
+          token += 'RIGHT_PAREN ) null\n';
+        }
+        else if (ch == '{') {
+          token += 'LEFT_BRACE { null\n';
+        }
+        else if (ch == '}') {
+          token += 'RIGHT_BRACE } null\n';
+        }
+        else if (ch == '.') {
+          token += 'DOT . null\n';
+        }
+        else if (ch == ',') {
+          token += 'COMMA , null\n';
+        }
+        else if (ch == ';') {
+          token += 'SEMICOLON ; null\n';
+        }
+        else if (ch == '+') {
+          token += 'PLUS + null\n';
+        }
+        else if (ch == '-') {
+          token += 'MINUS - null\n';
+        }
+        else if (ch == '*') {
+          token += 'STAR * null\n';
+        }
+        else if (ch == '/') {
+          token += 'SLASH / null\n';
+        }
+        else {
+          console.error(`[line ${index + 1}] Error: Unexpected character: ${ch}`);
+          isError = true;
       }
     }
   }
-  console.log("EOF  null");
+}
+ token += "EOF  null"
+ console.log(token);
+ if (isError) {
+  process.exit(65)
+ }
 }
 
 if (fileContent.length !== 0) {
